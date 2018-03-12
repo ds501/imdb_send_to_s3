@@ -1,0 +1,38 @@
+
+service: adtr-imdb-to-s3 # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: python3.6
+  deploymentBucket:
+    name: adtr.serverless-deploy
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+        - lambda:InvokeFunction
+      Resource: "*"
+
+#  environment:
+#    bucket_name: adtribute-imdb
+
+functions:
+  adtr_imdb_send_to_s3:
+    handler: handler.adtr_imdb_send_to_s3
+    timeout: 300
+    description: send imdb files from website to s3
+    environment:
+      bucket_name: adtribute-imdb
+      #[variable1]: [definition_no_quotes]
+
+#    events: #THE EVENTS THAT TRIGGER FUNCTION
+#      - schedule: cron(0 10 * * ? *) #run every day at 10am UTC
+#      - s3:
+#          bucket: adtribute-imdb
+#          event: s3:ObjectCreated:*
+#          rules:
+##            - prefix: initial/
+#            - suffix: .gz
+
+
